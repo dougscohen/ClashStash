@@ -40,6 +40,14 @@ class Player(object):
             self.spells_lookup[spell['name']] = []
             self.spells_lookup[spell['name']].append(spell['level'])
             self.spells_lookup[spell['name']].append(spell['maxLevel'])
+            
+            
+        self.heroes_lookup = {}
+        for hero in self.heroes:
+            self.heroes_lookup[hero['name']] = []
+            self.heroes_lookup[hero['name']].append(hero['level'])
+            self.heroes_lookup[hero['name']].append(hero['maxLevel'])
+            self.heroes_lookup[hero['name']].append(hero['village'])
     
             
     # ideas
@@ -47,12 +55,11 @@ class Player(object):
     # 2. "your labels"
     def get_labels(self):
         return [entry['name'] for entry in self.labels]
-    # 3. troop & spell levels
+    # 3. troop, spell, and hero levels
     
     def get_troop_info(self, troop):
         base = self.troops_lookup[troop][2]
         if base == 'home':
-        
             return f"Your {troop} is a home base troop and is level {self.troops_lookup[troop][0]} out of {self.troops_lookup[troop][1]}"
                     
         else:
@@ -62,11 +69,16 @@ class Player(object):
         spell = spell + ' Spell'
         return f"Your {spell} is level {self.spells_lookup[spell][0]} out of {self.spells_lookup[spell][1]}"
 
-# def get_user_name(user_id):
-#     # return user profile information
-#     response = requests.get(f'https://api.clashofclans.com/v1/players/%{user_id}', headers=headers)
-#     user_json = response.json()
-#     print(user_json['name'])
+    def get_hero_info(self, hero):
+        base = self.heroes_lookup[hero][2]
+        if base == 'home':
+            return f"Your {hero} is from home base and is level {self.heroes_lookup[hero][0]} out of {self.heroes_lookup[hero][1]}"
+                    
+        else:
+            return f"Your {hero} is from builder base and is level {self.heroes_lookup[hero][0]} out of {self.heroes_lookup[hero][1]}"
+
+
+    # show them how long until heroes are maxed for their TH??
     
 # def search_clan(name):
 #     # submit a clan search
@@ -75,7 +87,7 @@ class Player(object):
 #     for clan in clan_json['items']:
 #         print(clan['name'] + ' is level ' + str(clan['clanLevel']))
 
-player = Player('9L9GLQLJ')
-print(player.get_spell_info('Freeze'))
+player = Player('LJ82PUCCG')
+print(player.get_labels())
 
 # search_clan('Raz3 Predators')
