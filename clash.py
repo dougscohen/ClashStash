@@ -28,22 +28,39 @@ class Player(object):
         for key in player_dict: 
             setattr(self, key, player_dict[key]) 
             
+        self.troops_lookup = {}
+        for troop in self.troops:
+            self.troops_lookup[troop['name']] = []
+            self.troops_lookup[troop['name']].append(troop['level'])
+            self.troops_lookup[troop['name']].append(troop['maxLevel'])
+            self.troops_lookup[troop['name']].append(troop['village'])
+            
+        self.spells_lookup = {}
+        for spell in self.spells:
+            self.spells_lookup[spell['name']] = []
+            self.spells_lookup[spell['name']].append(spell['level'])
+            self.spells_lookup[spell['name']].append(spell['maxLevel'])
+    
+            
     # ideas
     # 1. list achievements
     # 2. "your labels"
     def get_labels(self):
         return [entry['name'] for entry in self.labels]
     # 3. troop & spell levels
-    def troops_overview(self):
-        self.troops_dict = {}
-        for troop in self.troops:
-            self.troops_dict[troop['name']] = []
-            self.troops_dict[troop['name']].append(troop['level'])
-            self.troops_dict[troop['name']].append(troop['maxLevel'])
-            self.troops_dict[troop['name']].append(troop['village'])
+    
+    def get_troop_info(self, troop):
+        base = self.troops_lookup[troop][2]
+        if base == 'home':
+        
+            return f"Your {troop} is a home base troop and is level {self.troops_lookup[troop][0]} out of {self.troops_lookup[troop][1]}"
+                    
+        else:
+            return f"Your {troop} is a builder base troop and is level {self.troops_lookup[troop][0]} out of {self.troops_lookup[troop][1]}"
             
-        return self.troops_dict
-            
+    def get_spell_info(self, spell):
+        spell = spell + ' Spell'
+        return f"Your {spell} is level {self.spells_lookup[spell][0]} out of {self.spells_lookup[spell][1]}"
 
 # def get_user_name(user_id):
 #     # return user profile information
@@ -59,6 +76,6 @@ class Player(object):
 #         print(clan['name'] + ' is level ' + str(clan['clanLevel']))
 
 player = Player('9L9GLQLJ')
-print(player.troops_overview())
+print(player.get_spell_info('Freeze'))
 
 # search_clan('Raz3 Predators')
