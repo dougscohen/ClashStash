@@ -79,7 +79,25 @@ class Player(object):
 
 
     # show them how long until heroes are maxed for their TH??
+
+
+
+
+class Clan(object):
+    """
+    docstring
+    """
+    def __init__(self, clantag):
+        
+        response = requests.get(f'https://api.clashofclans.com/v1/clans/%{clantag}', headers=headers)
+        clan_dict = response.json()
     
+        for key in clan_dict: 
+            setattr(self, key, clan_dict[key]) 
+        
+
+
+
 # def search_clan(name):
 #     # submit a clan search
 #     response = requests.get(f'https://api.clashofclans.com/v1/clans?name={name}', headers=headers)
@@ -88,6 +106,17 @@ class Player(object):
 #         print(clan['name'] + ' is level ' + str(clan['clanLevel']))
 
 player = Player('LJ82PUCCG')
-print(player.get_labels())
+clan = Clan('9YOLVRVO')
+print(clan.warLeague)
 
 # search_clan('Raz3 Predators')
+
+
+# Viz ideas
+
+
+# down the road ideas with ML
+# 1. recommend clans to join (clans that have people like you)
+# 2. recommend who in your clan to friendly challenge
+# 3. predict how long until you max your TH?
+# 4. predict which clan will win the war
