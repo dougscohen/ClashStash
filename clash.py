@@ -28,6 +28,22 @@ class Player(object):
         for key in player_dict: 
             setattr(self, key, player_dict[key]) 
             
+        self.max_heroes_for_each_th = {
+            13: [75, 75, 50, 20],
+            12: [65, 65, 40],
+            11: [50, 50, 20],
+            10: [40, 40],
+            9: [30, 30],
+            8: [10],
+            7: [5],
+            6: [],
+            5: [],
+            4: [],
+            3: [],
+            2: [],
+            1: []
+        }
+            
         self.troops_lookup = {}
         for troop in self.troops:
             self.troops_lookup[troop['name']] = []
@@ -79,6 +95,39 @@ class Player(object):
 
 
     # show them how long until heroes are maxed for their TH??
+    def until_max_heroes(self):
+        cur_th_level = self.townHallLevel
+        
+        max_heroes_for_th = self.max_heroes_for_each_th[cur_th_level]
+
+        hero_levels = []
+        for hero in self.heroes:
+            if hero['name'] != 'Battle Machine':
+                hero_levels.append(hero['level'])
+        
+        if len(hero_levels) == 1:
+            til_max_king = max_heroes_for_th[0] - hero_levels[0]
+            return [til_max_king]
+        
+        if len(hero_levels) == 2:
+            til_max_king = max_heroes_for_th[0] - hero_levels[0]
+            til_max_queen = max_heroes_for_th[1] - hero_levels[1]
+            return [til_max_king, til_max_queen]
+        
+        if len(hero_levels) == 3:
+            til_max_king = max_heroes_for_th[0] - hero_levels[0]
+            til_max_queen = max_heroes_for_th[1] - hero_levels[1]
+            til_max_gw = max_heroes_for_th[2] - hero_levels[2]
+            return [til_max_king, til_max_queen, til_max_gw]
+        
+        if len(hero_levels) == 4:
+            til_max_king = max_heroes_for_th[0] - hero_levels[0]
+            til_max_queen = max_heroes_for_th[1] - hero_levels[1]
+            til_max_gw = max_heroes_for_th[2] - hero_levels[2]
+            til_max_rc = max_heroes_for_th[3] - hero_levels[3]
+            return [til_max_king, til_max_queen, til_max_gw, til_max_rc]
+        
+        return "No heroes at this time"
 
 
 
@@ -105,14 +154,24 @@ class Clan(object):
 #     for clan in clan_json['items']:
 #         print(clan['name'] + ' is level ' + str(clan['clanLevel']))
 
-player = Player('LJ82PUCCG')
-clan = Clan('9YOLVRVO')
-print(clan.warLeague)
+
+
+
+player_ids = ['9L9GLQLJ', '9VCYV8G9', 'PLGQLPGRJ', 'L9GGJOJYP']
+
+for player in player_ids:
+    
+    test = Player(player)
+    print(test.until_max_heroes())
+    
+# player = Player('9VCYV8G9')
+# print(player.heroes)
 
 # search_clan('Raz3 Predators')
 
 
 # Viz ideas
+# 1. bar graph of members based on TH level
 
 
 # down the road ideas with ML
